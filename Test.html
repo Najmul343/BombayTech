@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Draughtsman Civil & Mech | Test Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #1e3c72;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        /* Class Buttons Grid */
+        .class-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .class-btn {
+            background: white;
+            border: none;
+            padding: 18px 20px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+
+        .class-btn:active {
+            transform: scale(0.98);
+        }
+
+        .class-icon {
+            font-size: 32px;
+        }
+
+        .class-info {
+            flex: 1;
+        }
+
+        .class-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .class-year {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        /* Color variants */
+        .civil-1st { border-left: 5px solid #0f5b8c; }
+        .civil-2nd { border-left: 5px solid #1a7a4a; }
+        .mech-1st { border-left: 5px solid #b23c1c; }
+        .mech-2nd { border-left: 5px solid #8b5cf6; }
+
+        /* Test Panel */
+        .test-panel {
+            background: white;
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .test-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eee;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .panel-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+
+        .back-btn {
+            background: #e9ecef;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 6px;
+            border-radius: 60px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 12px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: #1e3c72;
+            color: white;
+        }
+
+        /* Test Cards */
+        .tests-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .test-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 14px;
+        }
+
+        .test-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px solid #ff914d;
+        }
+
+        .test-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .test-link {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 16px;
+            border-radius: 50px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .test-link:active {
+            transform: scale(0.97);
+        }
+
+        .link-mock {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .link-practice {
+            background: #f39c12;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Mobile Scroll */
+        .tests-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .tests-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .tests-container::-webkit-scrollbar-thumb {
+            background: #1e3c72;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📐 Draughtsman Test Portal</h1>
+        <p>Civil D'man & Mech D'man | NIMI Pattern</p>
+    </div>
+
+    <!-- Class Selection Buttons -->
+    <div class="class-grid" id="classGrid">
+        <button class="class-btn civil-1st" data-class="civil_1st">
+            <span class="class-icon">🏗️</span>
+            <div class="class-info">
+                <div class="class-name">Civil D'man</div>
+                <div class="class-year">1st Year</div>
+            </div>
+            <span>→</span>
+        </button>
+        <button class="class-btn civil-2nd" data-class="civil_2nd">
+            <span class="class-icon">🏢</span>
+            <div class="class-info">
+                <div class="class-name">Civil D'man</div>
+                <div class="class-year">2nd Year</div>
+            </div>
+            <span>→</span>
+        </button>
+        <button class="class-btn mech-1st" data-class="mech_1st">
+            <span class="class-icon">🔧</span>
+            <div class="class-info">
+                <div class="class-name">Mech D'man</div>
+                <div class="class-year">1st Year</div>
+            </div>
+            <span>→</span>
+        </button>
+        <button class="class-btn mech-2nd" data-class="mech_2nd">
+            <span class="class-icon">⚙️</span>
+            <div class="class-info">
+                <div class="class-name">Mech D'man</div>
+                <div class="class-year">2nd Year</div>
+            </div>
+            <span>→</span>
+        </button>
+    </div>
+
+    <!-- Test Panel (Dynamic) -->
+    <div id="testPanel" class="test-panel">
+        <div class="panel-header">
+            <h2 id="panelTitle">Civil D'man - 1st Year</h2>
+            <button class="back-btn" onclick="showClassSelection()">← Back</button>
+        </div>
+        <div class="category-tabs">
+            <button class="tab-btn active" data-category="tt">📖 Trade Theory</button>
+            <button class="tab-btn" data-category="wcs">🛠️ WCS</button>
+            <button class="tab-btn" data-category="emp">💼 EMP Skills</button>
+        </div>
+        <div id="testsContainer" class="tests-container"></div>
+    </div>
+</div>
+<footer>
+    <p>📝 Practice Tests | 🎯 Mock Tests | NCVT Pattern</p>
+</footer>
+
+<script>
+    // Complete Test Data from the Excel
+    const testData = {
+        // Civil 1st Year
+        civil_1st: {
+            tt: [
+                { title: "Civil D'man - Mock Test No-1", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777371697209", practice: null },
+                { title: "Civil D'man - Mock Test #2", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777372233359", practice: null },
+                { title: "1st Yr- Civ. D'man T.T - 38 Questions Test-1", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777545858829", practice: null },
+                { title: "1st Yr- Civ. D'man T.T - 38 Questions Test #2", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777545978069", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777545978069&mode=practice" }
+            ],
+            wcs: [
+                { title: "1st Yr- Civ. D'man WCS - 20 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547224796", practice: null },
+                { title: "1st Yr-Civil D'man WCS - 30 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547499933", practice: null },
+                { title: "1st Yr-Civil D'man WCS - 100 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547697650", practice: null }
+            ],
+            emp: [
+                { title: "E skills - Intro to E skill & Constitutional Values", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548179819", practice: null },
+                { title: "E skills - Becoming a Professional in 21st Century", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548266729", practice: null },
+                { title: "E skills - Communication Skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548321987", practice: null },
+                { title: "E skills - Basic English Skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548458410", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548458410&mode=practice" }
+            ]
+        },
+
+        // Civil 2nd Year
+        civil_2nd: {
+            tt: [
+                { title: "2nd Year Civil D'man - Mock Test #1", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777372798276", practice: null },
+                { title: "2nd Year Civil D'man - Mock Test #2", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777373111828", practice: null },
+                { title: "2nd Year Civil D'man - Mock Test #3", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777373448404", practice: null },
+                { title: "Draughtsman Civil: 2nd Year (Test#1)", mock: null, practice: "https://script.google.com/macros/s/AKfycbx-c5Y-kRpMwHyyHGO8fcUceFwa3nZG36Itwhg_NchMsDciNUiim842mXwT_KvXz2hf/exec?testId=TEST_1773998447794&mode=practice" },
+                { title: "2nd Yr- Civ. D'man T.T - 38 Questions Test #1", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777546131368", practice: null },
+                { title: "2nd Yr- Civ. D'man T.T - 38 Questions Test #2", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777546184275", practice: null },
+                { title: "2nd Yr- Civ. D'man T.T - 38 Questions Test #3", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777546219159", practice: null },
+                { title: "2nd Yr- Civ. D'man T.T - 90 Questions Test #4", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777546371845", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777546371845&mode=practice" },
+                { title: "2nd Yr-Civ D'man T.T - 100 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777549016273", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777549016273&mode=practice" }
+            ],
+            wcs: [
+                { title: "2nd Yr- Civ. D'man WCS - 20 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547246336", practice: null },
+                { title: "2nd Yr-Civil D'man WCS - 30 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547487611", practice: null },
+                { title: "2nd Yr-Civil D'man WCS - 100 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547716823", practice: null }
+            ],
+            emp: [
+                { title: "E skills-2nd Yr - Basic Career skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548605965", practice: null },
+                { title: "E skills-2nd Yr - Basic Career skills (50 Q)", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548661235", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548661235&mode=practice" },
+                { title: "E skills-2nd Yr - Future work skills & Professional skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548743582", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548743582&mode=practice" },
+                { title: "E skills-2nd Yr - Internet skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548880010", practice: null },
+                { title: "E skills-2nd Yr - Entrepreneurship skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548906051", practice: null }
+            ]
+        },
+
+        // Mech 1st Year
+        mech_1st: {
+            tt: [
+                { title: "1st Yr-Mech D'man WCS - 20 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547285983", practice: null },
+                { title: "1st Yr-Mech D'man WCS - 30 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547376517", practice: null },
+                { title: "1st Yr-Mech D'man WCS - 100 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547754588", practice: null }
+            ],
+            wcs: [
+                { title: "1st Yr-Mech D'man WCS - 20 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547270308", practice: null }
+            ],
+            emp: [
+                { title: "E skills - Intro to E skill & Constitutional Values", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548179819", practice: null },
+                { title: "E skills - Becoming a Professional in 21st Century", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548266729", practice: null },
+                { title: "E skills - Communication Skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548321987", practice: null },
+                { title: "E skills - Basic English Skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548458410", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548458410&mode=practice" }
+            ]
+        },
+
+        // Mech 2nd Year
+        mech_2nd: {
+            tt: [
+                { title: "2nd Yr-Mech D'man WCS - 30 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547464756", practice: null },
+                { title: "2nd Yr-Mech D'man WCS - 100 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547890267", practice: null },
+                { title: "2nd Yr-Civ D'man T.T - 100 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777549016273", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777549016273&mode=practice" }
+            ],
+            wcs: [
+                { title: "2nd Yr-Mech D'man WCS - 20 Questions", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777547270308", practice: null }
+            ],
+            emp: [
+                { title: "E skills-2nd Yr - Basic Career skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548605965", practice: null },
+                { title: "E skills-2nd Yr - Basic Career skills (50 Q)", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548661235", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548661235&mode=practice" },
+                { title: "E skills-2nd Yr - Future work skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548743582", practice: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548743582&mode=practice" },
+                { title: "E skills-2nd Yr - Internet skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548880010", practice: null },
+                { title: "E skills-2nd Yr - Entrepreneurship skills", mock: "https://script.google.com/macros/s/AKfycbwTCtlzhALgJxHIIAMY1J1ukWvr1BLt2gfbhj8tEOPqWlyRBAVytZVnfSkh5P0lWUSsqQ/exec?testId=TEST_1777548906051", practice: null }
+            ]
+        }
+    };
+
+    let currentClass = null;
+    let currentCategory = 'tt';
+
+    function showClassSelection() {
+        document.getElementById('classGrid').style.display = 'flex';
+        document.getElementById('testPanel').classList.remove('active');
+        currentClass = null;
+    }
+
+    function showTests(className, displayName) {
+        currentClass = className;
+        document.getElementById('classGrid').style.display = 'none';
+        document.getElementById('testPanel').classList.add('active');
+        document.getElementById('panelTitle').innerHTML = displayName;
+        
+        // Reset to TT tab
+        currentCategory = 'tt';
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            if(btn.getAttribute('data-category') === 'tt') {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        
+        loadTests();
+    }
+
+    function loadTests() {
+        const container = document.getElementById('testsContainer');
+        const tests = testData[currentClass]?.[currentCategory] || [];
+        
+        if(tests.length === 0) {
+            container.innerHTML = '<div class="empty-state">📭 No tests available for this category</div>';
+            return;
+        }
+        
+        let html = '';
+        tests.forEach(test => {
+            html += `
+                <div class="test-card">
+                    <div class="test-title">📌 ${test.title}</div>
+                    <div class="test-links">
+                        ${test.mock ? `<a href="${test.mock}" target="_blank" class="test-link link-mock">🎯 MOCK TEST</a>` : ''}
+                        ${test.practice ? `<a href="${test.practice}" target="_blank" class="test-link link-practice">📝 PRACTICE</a>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // Event Listeners
+    document.querySelectorAll('.class-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const classKey = btn.getAttribute('data-class');
+            const displayName = btn.querySelector('.class-name').innerHTML + ' - ' + btn.querySelector('.class-year').innerHTML;
+            showTests(classKey, displayName);
+        });
+    });
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentCategory = btn.getAttribute('data-category');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loadTests();
+        });
+    });
+
+    // Initialize
+    showClassSelection();
+</script>
+</body>
+</html>
